@@ -1,12 +1,8 @@
 package todolist;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -36,86 +32,63 @@ public class Controller {
     private TextArea textArea;
     @FXML
     private Label dueLabel;
-
     @FXML
     private BorderPane borderPaneMain;
-
     @FXML
     private ContextMenu listContextMenu;
-
     @FXML
     private ToggleButton filterToggleButton;
-
-
     private FilteredList<ToDoItem> filteredList;
-
     private Predicate<ToDoItem> giveMeAllItems;
     private Predicate<ToDoItem> giveMeTodaysItems;
 
     public void initialize() {
 
+        addContextMenu();
+        supplyTextAreaWithData();
+        applyFiltering();
+
+    }
+
+    private void addContextMenu() {
+
         listContextMenu = new ContextMenu();
+        listContextMenu.getItems().addAll(addDeleteMenuItem());
+        listContextMenu.getItems().addAll(addDummyMenuItem());
+    }
+
+    private MenuItem addDeleteMenuItem() {
         MenuItem deleteMenuItem = new MenuItem("Delete");
-        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                                       @Override
-                                       public void handle(ActionEvent actionEvent) {
-                                           ToDoItem item = listView.getSelectionModel().getSelectedItem();
-                                           deleteItem(item);
-                                       }
-                                   }
-        );
-
-        MenuItem dummyMenuItem = new MenuItem("Dumy");
-
-        listContextMenu.getItems().addAll(deleteMenuItem);
-        listContextMenu.getItems().addAll(dummyMenuItem);
-
-        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
-            @Override
-            public void changed(ObservableValue<? extends ToDoItem> observableValue, ToDoItem toDoItem, ToDoItem t1) {
-                if (t1 != null) {
-                    textArea.setText(t1.getDetails());
-                    DateTimeFormatter df = DateTimeFormatter.ofPattern("dd MMMM YYYY (EEEE)");
-                    dueLabel.setText(df.format(t1.getDeadline()));
+        deleteMenuItem.setOnAction(actionEvent -> {
+                    ToDoItem item = listView.getSelectionModel().getSelectedItem();
+                    deleteItem(item);
                 }
-            }
-        });
+        );
+        return deleteMenuItem;
+    }
 
-        giveMeAllItems = new Predicate<ToDoItem>() {
-            @Override
-            public boolean test(ToDoItem toDoItem) {
-                return true;
-            }
-        };
+    private MenuItem addDummyMenuItem() {
+        return new MenuItem("Dumy");
+    }
 
-        giveMeTodaysItems = new Predicate<ToDoItem>() {
-            @Override
-            public boolean test(ToDoItem toDoItem) {
-                return toDoItem.getDeadline().isEqual(LocalDate.now());
-            }
-        };
 
-        filteredList = new FilteredList<ToDoItem>(ToDoData.getInstance().getToDoItems(), giveMeAllItems);
+    private void applyFiltering() {
+        giveMeAllItems = toDoItem -> true;
+        giveMeTodaysItems = toDoItem -> toDoItem.getDeadline().isEqual(LocalDate.now());
 
-        SortedList<ToDoItem> sortedList = new SortedList<ToDoItem>(filteredList,
-                new Comparator<ToDoItem>() {
-                    @Override
-                    public int compare(ToDoItem o1, ToDoItem o2) {
+        filteredList = new FilteredList<>(ToDoData.getInstance().getToDoItems(), giveMeAllItems);
 
-                        return o1.getDeadline().compareTo(o2.getDeadline());
-                    }
-                });
+        SortedList<ToDoItem> sortedList = new SortedList<>(filteredList,
+                Comparator.comparing(ToDoItem::getDeadline));
 
         listView.setItems(sortedList);
-
-        // listView.setItems(ToDoData.getInstance().getToDoItems());
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listView.getSelectionModel().selectFirst();
 
         listView.setCellFactory(new Callback<ListView<ToDoItem>, ListCell<ToDoItem>>() {
             @Override
             public ListCell<ToDoItem> call(ListView<ToDoItem> toDoItemListView) {
-                ListCell<ToDoItem> cell = new ListCell<ToDoItem>() {
+                ListCell<ToDoItem> cell = new ListCell<>() {
                     @Override
                     protected void updateItem(ToDoItem toDoItem, boolean b) {
                         super.updateItem(toDoItem, b);
@@ -133,7 +106,6 @@ public class Controller {
                         }
                     }
                 };
-
                 cell.emptyProperty().addListener(
                         (obs, wasEmpty, isNowEmpty) -> {
                             if (isNowEmpty) {
@@ -146,7 +118,19 @@ public class Controller {
                 return cell;
             }
         });
+
     }
+
+    private void supplyTextAreaWithData() {
+        listView.getSelectionModel().selectedItemProperty().addListener((observableValue, toDoItem, t1) -> {
+            if (t1 != null) {
+                textArea.setText(t1.getDetails());
+                DateTimeFormatter df = DateTimeFormatter.ofPattern("dd MMMM YYYY (EEEE)");
+                dueLabel.setText(df.format(t1.getDeadline()));
+            }
+        });
+    }
+
 
     private void deleteItem(ToDoItem item) {
 
@@ -160,7 +144,6 @@ public class Controller {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ToDoData.getInstance().deleteItem(item);
         }
-
     }
 
     @FXML
@@ -177,7 +160,7 @@ public class Controller {
 
         } catch (IOException e) {
             System.out.println("Can't load the dialog");
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
             return;
         }
 
@@ -205,18 +188,18 @@ public class Controller {
     }
 
     @FXML
-    public void actionToggleButton(ActionEvent actionEvent) {
+    public void actionToggleButton() {
 
         ToDoItem selectedItem = listView.getSelectionModel().getSelectedItem();
 
         if (filterToggleButton.isSelected()) {
             filteredList.setPredicate(giveMeTodaysItems);
-            if(filteredList.isEmpty()){
+            if (filteredList.isEmpty()) {
                 textArea.clear();
                 dueLabel.setText("");
-            }else if(filteredList.contains(selectedItem)) {
+            } else if (filteredList.contains(selectedItem)) {
                 listView.getSelectionModel().select(selectedItem);
-            }else {
+            } else {
                 listView.getSelectionModel().selectFirst();
             }
 
@@ -226,8 +209,7 @@ public class Controller {
     }
 
     @FXML
-    public void handleExitMenuItem(ActionEvent actionEvent) {
-
+    public void handleExitMenuItem() {
         Platform.exit();
     }
 }
