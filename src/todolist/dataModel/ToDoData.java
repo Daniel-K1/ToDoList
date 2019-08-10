@@ -38,22 +38,12 @@ public class ToDoData {
         toDoItems.add(toDoItem);
     }
 
-    public void loadToDoItems() throws IOException {
+    public void loadToDoItems() {
 
         try (BufferedReader br = openFileForReading()) {
-            String input;
-            while ((input = br.readLine()) != null) {
-                String[] itemPieces = input.split("\t");
-
-                String shortDescription = itemPieces[0];
-                String longDescription = itemPieces[1];
-                String dateDescription = itemPieces[2];
-
-                LocalDate date = LocalDate.parse(dateDescription, formatter);
-
-                ToDoItem item = new ToDoItem(shortDescription, longDescription, date);
-                toDoItems.add(item);
-            }
+            loadItems(br);
+        } catch (IOException e) {
+            System.out.println("IO Exception while loading data from file: " + e.getMessage());
         }
     }
 
@@ -63,23 +53,44 @@ public class ToDoData {
         return Files.newBufferedReader(path);
     }
 
-    public void storeToDoItems() throws IOException {
+    private void loadItems(BufferedReader br) throws IOException {
+        String input;
+        while ((input = br.readLine()) != null) {
+            String[] itemPieces = input.split("\t");
+
+            String shortDescription = itemPieces[0];
+            String longDescription = itemPieces[1];
+            String dateDescription = itemPieces[2];
+
+            LocalDate date = LocalDate.parse(dateDescription, formatter);
+
+            ToDoItem item = new ToDoItem(shortDescription, longDescription, date);
+            toDoItems.add(item);
+        }
+    }
+
+    public void storeToDoItems() {
 
         try (BufferedWriter bw = openFileForWriting()) {
-
-            for (ToDoItem item : toDoItems) {
-                bw.write(String.format("%s\t%s\t%s",
-                        item.getShortDescription(),
-                        item.getDetails(),
-                        item.getDeadline().format(formatter)));
-                bw.newLine();
-            }
+            storeItems(bw);
+        } catch (IOException e) {
+            System.out.println("IO Exception while saving data to a file: " + e.getMessage());
         }
     }
 
     private BufferedWriter openFileForWriting() throws IOException {
         Path path = Paths.get(fileName);
         return Files.newBufferedWriter(path);
+    }
+
+    private void storeItems(BufferedWriter bw) throws IOException {
+        for (ToDoItem item : toDoItems) {
+            bw.write(String.format("%s\t%s\t%s",
+                    item.getShortDescription(),
+                    item.getDetails(),
+                    item.getDeadline().format(formatter)));
+            bw.newLine();
+        }
     }
 
     public void deleteItem(ToDoItem item) {

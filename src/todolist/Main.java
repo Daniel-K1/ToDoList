@@ -22,23 +22,15 @@ public class Main extends Application {
     @Override
     public void stop() {
 
-        try {
-            ToDoData.getInstance().storeToDoItems();
-
-        } catch(IOException e) {
-            System.out.println(e.getMessage());
-        }
+        ToDoData.getInstance().storeToDoItems();
     }
 
     @Override
     public void init() {
-        try {
-            ToDoData.getInstance().loadToDoItems();
 
-        } catch(IOException e) {
-            System.out.println(e.getMessage());
-        }
+        ToDoData.getInstance().loadToDoItems();
     }
+
     public static void main(String[] args) {
         launch(args);
     }
