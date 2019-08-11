@@ -21,8 +21,11 @@
 <BorderPane fx:id="borderPaneMain" fx:controller="todolist.Controller"
             xmlns:fx="http://javafx.com/fxml">
 
-    <top>
 
+
+
+
+    <top>
         <VBox>
             <MenuBar>
                 <Menu text="File">
