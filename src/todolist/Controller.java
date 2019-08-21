@@ -18,13 +18,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Controller {
-
-    private List<ToDoItem> todoItems;
 
     @FXML
     private ListView<ToDoItem> listView;
@@ -85,7 +82,7 @@ public class Controller {
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listView.getSelectionModel().selectFirst();
 
-        listView.setCellFactory(new Callback<ListView<ToDoItem>, ListCell<ToDoItem>>() {
+        listView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<ToDoItem> call(ListView<ToDoItem> toDoItemListView) {
                 ListCell<ToDoItem> cell = new ListCell<>() {

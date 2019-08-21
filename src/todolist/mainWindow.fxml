@@ -21,10 +21,6 @@
 <BorderPane fx:id="borderPaneMain" fx:controller="todolist.Controller"
             xmlns:fx="http://javafx.com/fxml">
 
-
-
-
-
     <top>
         <VBox>
             <MenuBar>
