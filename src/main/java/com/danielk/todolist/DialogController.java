@@ -1,11 +1,11 @@
-package todolist;
+package com.danielk.todolist;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import todolist.dataModel.ToDoData;
-import todolist.dataModel.ToDoItem;
+import com.danielk.todolist.dataModel.ToDoData;
+import com.danielk.todolist.dataModel.ToDoItem;
 import java.time.LocalDate;
 
 public class DialogController {

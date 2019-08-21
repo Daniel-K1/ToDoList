@@ -18,7 +18,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.ToggleButton?>
-<BorderPane fx:id="borderPaneMain" fx:controller="todolist.Controller"
+<BorderPane fx:id="borderPaneMain" fx:controller="com.danielk.todolist.Controller"
             xmlns:fx="http://javafx.com/fxml">
 
     <top>
@@ -42,7 +42,7 @@
                         </tooltip>
                     <graphic>
                         <ImageView>
-                            <Image url="@/todolist/New24.gif"/>
+                            <Image url="@/New24.gif"/>
                         </ImageView>
                     </graphic>
                     </Button>
@@ -52,7 +52,7 @@
                         </tooltip>
                         <graphic>
                             <ImageView>
-                                <Image url="@/todolist/History24.gif"/>
+                                <Image url="@/History24.gif"/>
                             </ImageView>
                         </graphic>
 

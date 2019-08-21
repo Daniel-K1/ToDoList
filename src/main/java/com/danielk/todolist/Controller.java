@@ -1,4 +1,4 @@
-package todolist;
+package com.danielk.todolist;
 
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
@@ -11,8 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import todolist.dataModel.ToDoData;
-import todolist.dataModel.ToDoItem;
+import com.danielk.todolist.dataModel.ToDoData;
+import com.danielk.todolist.dataModel.ToDoItem;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -150,7 +150,7 @@ public class Controller {
         dialog.initOwner(borderPaneMain.getScene().getWindow());
         dialog.setTitle("Add new task");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("ToDoItemDialog.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/ToDoItemDialog.fxml"));
 
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
