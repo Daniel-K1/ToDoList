@@ -12,13 +12,14 @@ Still under development. Featurea added so far:
 - exit program
 
 ### requirements:
+
 - Java 11
 
 ### How to run
 
 - clone and download repository
 - make sure you have switched to Java 11*
-- go to project file (/todolist/) - make sure you see folder "target" and file "toolist.txt"
+- go to project file (/todolist/) - make sure you see folder "target" and file "todolist.txt"
 - while in "todolist" folder, run jar file from console using: 
 ```$xslt
 java -jar target/todolist-1.0-SNAPSHOT.jar
