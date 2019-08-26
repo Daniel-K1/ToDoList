@@ -3,6 +3,9 @@ package com.danielk.todolist.dataModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,7 +28,11 @@ public class ToDoData {
         return instance;
     }
 
+    private final Logger LOG = LogManager.getLogger();
+
+
     private ToDoData() {
+
     }
 
 
@@ -43,7 +50,9 @@ public class ToDoData {
         try (BufferedReader br = openFileForReading()) {
             loadItems(br);
         } catch (IOException e) {
-            System.out.println("IO Exception while loading data from file: " + e.getMessage());
+
+            LOG.warn("IO Exception while loading data from file: "+e.getMessage());
+            LOG.warn("empty database file: 'todolist.txt' will be created");
         }
     }
 
@@ -74,7 +83,7 @@ public class ToDoData {
         try (BufferedWriter bw = openFileForWriting()) {
             storeItems(bw);
         } catch (IOException e) {
-            System.out.println("IO Exception while saving data to a file: " + e.getMessage());
+            LOG.error("IO Exception while saving data to a file: " + e.getMessage());
         }
     }
 

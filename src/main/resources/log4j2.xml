@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=blue} %logger{36} - %msg%n" disableAnsi="false"/>
+        </Console>
+
+        <File name="File" fileName="output.log" bufferedIO="true" >
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=blue} %logger{36} - %msg%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+        <Logger name="com.danielk.todolist" level="TRACE" additivity="true">
+            <AppenderRef ref="File"/>
+        </Logger>
+    </Loggers>
+</Configuration>

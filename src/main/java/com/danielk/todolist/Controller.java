@@ -20,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Predicate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class Controller {
 
@@ -38,6 +41,8 @@ public class Controller {
     private FilteredList<ToDoItem> filteredList;
     private Predicate<ToDoItem> giveMeAllItems;
     private Predicate<ToDoItem> giveMeTodaysItems;
+    private final Logger LOG = LogManager.getLogger();
+
 
     public void initialize() {
 
@@ -156,8 +161,7 @@ public class Controller {
             dialog.getDialogPane().setContent(fxmlLoader.load());
 
         } catch (IOException e) {
-            System.out.println("Can't load the dialog");
-            e.getStackTrace();
+            LOG.error("Can't load te dialog"+e.getMessage());
             return;
         }
 
