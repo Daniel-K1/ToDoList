@@ -1,10 +1,10 @@
 package com.danielk.todolist.dataModel;
 
+import com.danielk.todolist.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,7 +28,7 @@ public class ToDoData {
         return instance;
     }
 
-    private final Logger LOG = LogManager.getLogger();
+    private final org.slf4j.Logger LOG = LoggerFactory.getLogger(Controller.class);
 
 
     private ToDoData() {
