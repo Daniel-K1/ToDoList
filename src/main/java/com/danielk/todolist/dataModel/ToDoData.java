@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,7 +29,7 @@ public class ToDoData {
         return instance;
     }
 
-    private final org.slf4j.Logger LOG = LoggerFactory.getLogger(Controller.class);
+    private final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
 
     private ToDoData() {
